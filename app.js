@@ -1,6 +1,8 @@
 const i18n = {
   "ar-IQ": {
     hero: "ملفك جاهز للتنزيل!",
+    ready: "محتواك <strong>جاهز الآن!</strong>",
+    continue: "استمر »",
     prompt: "أدخل رقم هاتفك المحمول للدخول",
     phoneLabel: "رقم الهاتف المحمول:",
     phoneError: "يرجى إدخال رقم هاتف صحيح (10–11 رقم)",
@@ -19,6 +21,8 @@ const i18n = {
   },
   "en-IQ": {
     hero: "Your file is ready to download!",
+    ready: "Your content is <strong>ready now!</strong>",
+    continue: "Continue »",
     prompt: "Enter your mobile number to continue",
     phoneLabel: "Mobile number:",
     phoneError: "Please enter a valid phone number (10–11 digits)",
@@ -37,16 +41,6 @@ const i18n = {
   },
 };
 
-const phoneInput = document.getElementById("phone");
-const phoneError = document.getElementById("phone-error");
-const form = document.getElementById("access-form");
-const submitBtn = document.getElementById("submit-btn");
-const verifyBtn = document.getElementById("verify-btn");
-const stepPhone = document.getElementById("step-phone");
-const stepPin = document.getElementById("step-pin");
-const pinInput = document.getElementById("pin");
-const pinError = document.getElementById("pin-error");
-const successMsg = document.getElementById("success-msg");
 const languageSelect = document.getElementById("language-select");
 
 function applyLanguage(code) {
@@ -64,8 +58,10 @@ function applyLanguage(code) {
     if (t[key] != null) el.innerHTML = t[key];
   });
 
-  languageSelect.style.backgroundPosition =
-    t.dir === "rtl" ? "left 10px center" : "right 10px center";
+  if (languageSelect) {
+    languageSelect.style.backgroundPosition =
+      t.dir === "rtl" ? "left 10px center" : "right 10px center";
+  }
 }
 
 function digitsOnly(value) {
@@ -76,61 +72,78 @@ function isValidPhone(value) {
   return /^\d{10,11}$/.test(value);
 }
 
-phoneInput.addEventListener("input", () => {
-  phoneInput.value = digitsOnly(phoneInput.value);
-  phoneError.classList.remove("show");
-  phoneInput.classList.remove("is-invalid");
-  submitBtn.disabled = !isValidPhone(phoneInput.value);
-});
+function initLoginPage() {
+  const phoneInput = document.getElementById("phone");
+  const phoneError = document.getElementById("phone-error");
+  const form = document.getElementById("access-form");
+  const submitBtn = document.getElementById("submit-btn");
+  const verifyBtn = document.getElementById("verify-btn");
+  const stepPhone = document.getElementById("step-phone");
+  const stepPin = document.getElementById("step-pin");
+  const pinInput = document.getElementById("pin");
+  const pinError = document.getElementById("pin-error");
+  const successMsg = document.getElementById("success-msg");
 
-submitBtn.disabled = true;
+  if (!form || !phoneInput || !submitBtn) return;
 
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const phone = phoneInput.value;
+  phoneInput.addEventListener("input", () => {
+    phoneInput.value = digitsOnly(phoneInput.value);
+    phoneError.classList.remove("show");
+    phoneInput.classList.remove("is-invalid");
+    submitBtn.disabled = !isValidPhone(phoneInput.value);
+  });
 
-  if (!isValidPhone(phone)) {
-    phoneError.classList.add("show");
-    phoneInput.classList.add("is-invalid");
-    return;
-  }
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const phone = phoneInput.value;
 
-  submitBtn.classList.add("loading");
-  submitBtn.disabled = true;
+    if (!isValidPhone(phone)) {
+      phoneError.classList.add("show");
+      phoneInput.classList.add("is-invalid");
+      return;
+    }
 
-  // UI-only mock of PIN step (no remote gateway calls)
-  setTimeout(() => {
-    submitBtn.classList.remove("loading");
-    stepPhone.style.display = "none";
-    stepPin.classList.add("active");
-    pinInput.focus();
-  }, 700);
-});
+    submitBtn.classList.add("loading");
+    submitBtn.disabled = true;
 
-verifyBtn.addEventListener("click", () => {
-  const pin = pinInput.value.replace(/\D/g, "");
-  pinError.classList.remove("show");
+    setTimeout(() => {
+      submitBtn.classList.remove("loading");
+      stepPhone.style.display = "none";
+      stepPin.classList.add("active");
+      pinInput.focus();
+    }, 700);
+  });
 
-  if (pin.length < 4) {
-    pinError.classList.add("show");
-    return;
-  }
+  verifyBtn.addEventListener("click", () => {
+    const pin = pinInput.value.replace(/\D/g, "");
+    pinError.classList.remove("show");
 
-  verifyBtn.classList.add("loading");
-  setTimeout(() => {
-    verifyBtn.classList.remove("loading");
-    stepPin.classList.remove("active");
-    successMsg.classList.add("show");
-  }, 600);
-});
+    if (pin.length < 4) {
+      pinError.classList.add("show");
+      return;
+    }
 
-pinInput.addEventListener("input", () => {
-  pinInput.value = pinInput.value.replace(/\D/g, "").slice(0, 6);
-  pinError.classList.remove("show");
-});
+    verifyBtn.classList.add("loading");
+    setTimeout(() => {
+      verifyBtn.classList.remove("loading");
+      stepPin.classList.remove("active");
+      successMsg.classList.add("show");
+    }, 600);
+  });
 
-languageSelect.addEventListener("change", () => {
-  applyLanguage(languageSelect.value);
-});
+  pinInput.addEventListener("input", () => {
+    pinInput.value = pinInput.value.replace(/\D/g, "").slice(0, 6);
+    pinError.classList.remove("show");
+  });
+}
 
-applyLanguage(languageSelect.value || "ar-IQ");
+if (languageSelect) {
+  languageSelect.addEventListener("change", () => {
+    applyLanguage(languageSelect.value);
+  });
+  applyLanguage(languageSelect.value || "ar-IQ");
+}
+
+if (window.GAMIFY_PAGE === "login" || document.getElementById("access-form")) {
+  initLoginPage();
+}

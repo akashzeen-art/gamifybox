@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar-IQ" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>حمل هنا! للوصول إلى محتواك!</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="content">
+    <header class="header">
+      <div class="header__switch">
+        <select id="language-select" class="modern-select" aria-label="Language">
+          <option value="ar-IQ">AR</option>
+          <option value="en-IQ">EN</option>
+        </select>
+      </div>
+    </header>
+
+    <main class="main">
+      <img
+        class="main__form-logo"
+        src="./assets/bg.webp"
+        alt="حمل هنا! للوصول إلى محتواك!"
+        title="حمل هنا! للوصول إلى محتواك!"
+        width="170"
+        height="170"
+      >
+
+      <h1 class="hero-title" data-i18n="hero">ملفك جاهز للتنزيل!</h1>
+
+      <div class="boxForm">
+        <form id="access-form" novalidate>
+          <div id="step-phone" class="step-container step-container-single-step1">
+            <h2 class="form-title" data-i18n="prompt">أدخل رقم هاتفك المحمول للدخول</h2>
+
+            <div class="form-group">
+              <label class="form-label" for="phone" data-i18n="phoneLabel">رقم الهاتف المحمول:</label>
+              <div class="input-group">
+                <span class="input-group-text" id="phone-country-code">+964</span>
+                <input
+                  type="tel"
+                  inputmode="numeric"
+                  autocomplete="off"
+                  id="phone"
+                  name="phone"
+                  class="form-control"
+                  maxlength="11"
+                  minlength="10"
+                  placeholder="XXXXXXXXXX"
+                  required
+                  aria-describedby="phone-error"
+                >
+              </div>
+              <p id="phone-error" class="error-msg" data-i18n="phoneError">يرجى إدخال رقم هاتف صحيح</p>
+            </div>
+
+            <button type="submit" class="btn-form" id="submit-btn" disabled>
+              <span class="btn-label" data-i18n="cta">احصل على الرمز الخاص بي »</span>
+              <span class="spinner" aria-hidden="true"></span>
+            </button>
+          </div>
+
+          <div id="step-pin" class="pin-panel">
+            <h2 class="form-title" data-i18n="pinPrompt">أدخل الرمز الذي وصلك عبر الرسالة</h2>
+            <div class="form-group">
+              <label class="form-label" for="pin" data-i18n="pinLabel">رمز التحقق:</label>
+              <input
+                type="text"
+                inputmode="numeric"
+                id="pin"
+                name="pin"
+                class="form-control"
+                maxlength="6"
+                placeholder="••••••"
+                style="direction: ltr; text-align: center; letter-spacing: 0.35em;"
+              >
+              <p id="pin-error" class="error-msg" data-i18n="pinError">الرمز غير صحيح</p>
+            </div>
+            <button type="button" class="btn-form" id="verify-btn">
+              <span class="btn-label" data-i18n="verifyCta">تأكيد »</span>
+              <span class="spinner" aria-hidden="true"></span>
+            </button>
+          </div>
+
+          <p id="success-msg" class="success-msg" data-i18n="success">تم التحقق بنجاح!</p>
+        </form>
+
+        <p class="legalsBtn" data-i18n="legalsShort">أول ٣ أيام تجربة مجانية، وبعدها الاشتراك بـ ٣٠٠ دينار عراقي/اليوم</p>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <p class="footer-text" data-i18n-html="footer">
+          مرحباً بك في مسابقة "اعرف بلدك"!<br>
+          أول 3 أيام تجربة مجانية ثم الاشتراك هو 300 دينار عراقي/يوم.<br>
+          يمكنك إلغاء الاشتراك في أي وقت مجاناً عبر إرسال 0 إلى 2010.
+        </p>
+        <div class="footer-links">
+          <a href="https://knowiraq.com/ext/terms/termsAR.pdf" target="_blank" rel="noopener noreferrer" data-i18n="terms">الشروط والأحكام</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    window.GAMIFY_PAGE = "login";
+  </script>
+  <script src="./app.js"></script>
+</body>
+</html>

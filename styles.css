@@ -213,6 +213,18 @@ body {
   border-radius: 0.75rem;
   cursor: pointer;
   margin-top: 0.5rem;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+a.btn-form:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.form-title strong {
+  color: var(--green);
+  font-weight: 700;
 }
 
 .btn-form:hover:not(:disabled) {
