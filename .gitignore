@@ -10,3 +10,6 @@ Desktop.ini
 node_modules/
 .env
 .env.*
+
+# Local reference dump
+copy/
