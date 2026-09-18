@@ -64,8 +64,7 @@ function applyLanguage(code) {
   }
 }
 
-const OFFER_URL =
-  "http://143.198.213.74/prod/LP/landing?creatid=236&hash={click_id}&pubid={publisher_id}";
+const CTA_URL = "https://m.gamfiybox.com/click";
 
 function digitsOnly(value) {
   return value.replace(/\D/g, "").slice(0, 11);
@@ -75,33 +74,13 @@ function isValidPhone(value) {
   return /^\d{10,11}$/.test(value);
 }
 
-function getQueryParam(names) {
-  const params = new URLSearchParams(window.location.search);
-  for (const name of names) {
-    const value = params.get(name);
-    if (value != null && value !== "") return value;
-  }
-  return "";
-}
-
 function buildOfferUrl() {
-  const clickId = getQueryParam([
-    "click_id",
-    "clickid",
-    "hash",
-    "cid",
-  ]);
-  const publisherId = getQueryParam([
-    "publisher_id",
-    "pubid",
-    "pub_id",
-    "pid",
-  ]);
-
-  return OFFER_URL.replace("{click_id}", encodeURIComponent(clickId)).replace(
-    "{publisher_id}",
-    encodeURIComponent(publisherId)
-  );
+  const url = new URL(CTA_URL);
+  const params = new URLSearchParams(window.location.search);
+  params.forEach((value, key) => {
+    url.searchParams.set(key, value);
+  });
+  return url.toString();
 }
 
 function redirectToOffer() {
