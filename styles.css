@@ -42,17 +42,21 @@ body {
 
 .header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   width: 100%;
   max-width: 420px;
   margin-top: 12px;
   padding: 0 16px;
 }
 
+html[dir="rtl"] .header {
+  justify-content: flex-end;
+}
+
 .modern-select {
   width: 50px;
   max-width: 50px;
-  padding: 5px 8px 5px 5px;
+  padding: 5px 18px 5px 5px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 12px;
@@ -61,11 +65,16 @@ body {
   background-color: #fff;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23333' d='M0 0l5 5 5-5H0z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: left 8px center;
+  background-position: right 8px center;
   background-size: 10px;
   appearance: none;
   outline: none;
   cursor: pointer;
+}
+
+html[dir="rtl"] .modern-select {
+  padding: 5px 5px 5px 18px;
+  background-position: left 8px center;
 }
 
 .main {

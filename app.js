@@ -1,52 +1,79 @@
+const DEFAULT_LANG = "fr";
+
 const i18n = {
-  "ar-IQ": {
-    hero: "ملفك جاهز للتنزيل!",
-    ready: "محتواك<br><strong>جاهز الآن!</strong>",
-    continue: "استمر »",
-    prompt: "أدخل رقم هاتفك المحمول للدخول",
-    phoneLabel: "رقم الهاتف المحمول:",
-    phoneError: "يرجى إدخال رقم هاتف صحيح (10–11 رقم)",
-    cta: "احصل على الرمز الخاص بي »",
-    pinPrompt: "أدخل الرمز الذي وصلك عبر الرسالة",
-    pinLabel: "رمز التحقق:",
-    pinError: "الرمز غير صحيح",
-    verifyCta: "تأكيد »",
-    success: "تم التحقق بنجاح!",
-    legalsShort: "أول ٣ أيام تجربة مجانية، وبعدها الاشتراك بـ ٣٠٠ دينار عراقي/اليوم",
+  fr: {
+    title: "Téléchargez ici ! Accédez à votre contenu !",
+    hero: "Votre fichier est prêt à être téléchargé !",
+    ready: "Votre contenu<br><strong>est prêt maintenant !</strong>",
+    continue: "Continuer »",
+    prompt: "Entrez votre numéro de mobile pour continuer",
+    phoneLabel: "Numéro de téléphone mobile :",
+    phoneError: "Veuillez entrer un numéro de téléphone valide (8–15 chiffres)",
+    cta: "Obtenir mon code »",
+    pinPrompt: "Entrez le code reçu par SMS",
+    pinLabel: "Code de vérification :",
+    pinError: "Code invalide",
+    verifyCta: "Confirmer »",
+    success: "Vérifié avec succès !",
+    legalsShort:
+      "3 premiers jours d’essai gratuit, puis abonnement selon les conditions de l’offre",
     footer:
-      'مرحباً بك في مسابقة "اعرف بلدك"!<br>أول 3 أيام تجربة مجانية ثم الاشتراك هو 300 دينار عراقي/يوم.<br>يمكنك إلغاء الاشتراك في أي وقت مجاناً عبر إرسال 0 إلى 2010.',
-    terms: "الشروط والأحكام",
-    dir: "rtl",
-    lang: "ar-IQ",
+      "Bienvenue !<br>3 premiers jours d’essai gratuit, puis abonnement selon les conditions de l’offre.<br>Vous pouvez résilier à tout moment selon les instructions indiquées.",
+    terms: "Conditions générales",
+    dir: "ltr",
+    lang: "fr",
   },
-  "en-IQ": {
+  en: {
+    title: "Download here! Access your content!",
     hero: "Your file is ready to download!",
-    ready: "Your content is<br><strong>ready now!</strong>",
+    ready: "Your content<br><strong>is ready now!</strong>",
     continue: "Continue »",
     prompt: "Enter your mobile number to continue",
     phoneLabel: "Mobile number:",
-    phoneError: "Please enter a valid phone number (10–11 digits)",
+    phoneError: "Please enter a valid phone number (8–15 digits)",
     cta: "Get my code »",
     pinPrompt: "Enter the code sent by SMS",
     pinLabel: "Verification code:",
     pinError: "Invalid code",
     verifyCta: "Confirm »",
     success: "Verified successfully!",
-    legalsShort: "First 3 days free trial, then 300 IQD/day",
+    legalsShort: "First 3 days free trial, then subscription per offer terms",
     footer:
-      'Welcome to the "Know Your Country" quiz!<br>First 3 days free, then 300 IQD/day.<br>Cancel anytime free by sending 0 to 2010.',
+      "Welcome!<br>First 3 days free trial, then subscription per offer terms.<br>You can cancel anytime as indicated in the offer instructions.",
     terms: "Terms & Conditions",
     dir: "ltr",
-    lang: "en-IQ",
+    lang: "en",
+  },
+  ar: {
+    title: "حمل هنا! للوصول إلى محتواك!",
+    hero: "ملفك جاهز للتنزيل!",
+    ready: "محتواك<br><strong>جاهز الآن!</strong>",
+    continue: "استمر »",
+    prompt: "أدخل رقم هاتفك المحمول للدخول",
+    phoneLabel: "رقم الهاتف المحمول:",
+    phoneError: "يرجى إدخال رقم هاتف صحيح (8–15 رقم)",
+    cta: "احصل على الرمز الخاص بي »",
+    pinPrompt: "أدخل الرمز الذي وصلك عبر الرسالة",
+    pinLabel: "رمز التحقق:",
+    pinError: "الرمز غير صحيح",
+    verifyCta: "تأكيد »",
+    success: "تم التحقق بنجاح!",
+    legalsShort: "أول 3 أيام تجربة مجانية، ثم الاشتراك وفق شروط العرض",
+    footer:
+      "مرحباً بك!<br>أول 3 أيام تجربة مجانية، ثم الاشتراك وفق شروط العرض.<br>يمكنك إلغاء الاشتراك في أي وقت وفق التعليمات.",
+    terms: "الشروط والأحكام",
+    dir: "rtl",
+    lang: "ar",
   },
 };
 
 const languageSelect = document.getElementById("language-select");
 
 function applyLanguage(code) {
-  const t = i18n[code] || i18n["ar-IQ"];
+  const t = i18n[code] || i18n[DEFAULT_LANG];
   document.documentElement.lang = t.lang;
   document.documentElement.dir = t.dir;
+  document.title = t.title;
 
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
@@ -58,20 +85,26 @@ function applyLanguage(code) {
     if (t[key] != null) el.innerHTML = t[key];
   });
 
+  const logo = document.querySelector(".main__form-logo");
+  if (logo) {
+    logo.alt = t.title;
+    logo.title = t.title;
+  }
+
   if (languageSelect) {
     languageSelect.style.backgroundPosition =
-      t.dir === "rtl" ? "left 10px center" : "right 10px center";
+      t.dir === "rtl" ? "left 8px center" : "right 8px center";
   }
 }
 
 const CTA_URL = "https://m.gamfiybox.com/click";
 
 function digitsOnly(value) {
-  return value.replace(/\D/g, "").slice(0, 11);
+  return value.replace(/\D/g, "").slice(0, 15);
 }
 
 function isValidPhone(value) {
-  return /^\d{10,11}$/.test(value);
+  return /^\d{8,15}$/.test(value);
 }
 
 function buildOfferUrl() {
@@ -130,11 +163,29 @@ function initLoginPage() {
   });
 }
 
+function resolveInitialLang() {
+  const params = new URLSearchParams(window.location.search);
+  const fromQuery = (params.get("lang") || params.get("aslang") || "").toLowerCase();
+  if (fromQuery.startsWith("fr")) return "fr";
+  if (fromQuery.startsWith("en")) return "en";
+  if (fromQuery.startsWith("ar")) return "ar";
+
+  const saved = localStorage.getItem("selectedLang");
+  if (saved && i18n[saved]) return saved;
+
+  return DEFAULT_LANG;
+}
+
 if (languageSelect) {
+  const initialLang = resolveInitialLang();
+  languageSelect.value = initialLang;
+
   languageSelect.addEventListener("change", () => {
+    localStorage.setItem("selectedLang", languageSelect.value);
     applyLanguage(languageSelect.value);
   });
-  applyLanguage(languageSelect.value || "ar-IQ");
+
+  applyLanguage(initialLang);
 }
 
 if (window.GAMIFY_PAGE === "landing" || document.getElementById("nextStep")) {
