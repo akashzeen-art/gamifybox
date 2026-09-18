@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <div class="content">
+  <div class="content content--landing">
     <header class="header">
       <div class="header__switch">
         <select id="language-select" class="modern-select" aria-label="Language">
@@ -17,31 +17,27 @@
       </div>
     </header>
 
-    <main class="main">
+    <main class="main main--landing">
       <img
         class="main__form-logo"
-        src="./assets/bg.webp"
+        src="./assets/logo.png"
         alt="حمل هنا! للوصول إلى محتواك!"
         title="حمل هنا! للوصول إلى محتواك!"
         width="170"
         height="170"
       >
 
-      <h1 class="hero-title" data-i18n="hero">ملفك جاهز للتنزيل!</h1>
-
-      <div class="boxForm">
+      <div class="boxForm boxForm--landing">
         <div class="step-container step-container-single-step0">
-          <h2 class="form-title">
-            <span data-i18n-html="ready">محتواك <strong>جاهز الآن!</strong></span>
-          </h2>
-          <a class="btn-form" id="nextStep" href="./login.html" data-i18n="continue">استمر »</a>
+          <h1 class="form-title form-title--ready" data-i18n-html="ready">
+            محتواك<br><strong>جاهز الآن!</strong>
+          </h1>
+          <button type="button" class="btn-form" id="nextStep" data-i18n="continue">
+            استمر »
+          </button>
         </div>
       </div>
     </main>
-
-    <footer class="footer">
-      <div class="footer-inner"></div>
-    </footer>
   </div>
 
   <script>

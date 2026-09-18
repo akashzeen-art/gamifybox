@@ -1,7 +1,7 @@
 const i18n = {
   "ar-IQ": {
     hero: "ملفك جاهز للتنزيل!",
-    ready: "محتواك <strong>جاهز الآن!</strong>",
+    ready: "محتواك<br><strong>جاهز الآن!</strong>",
     continue: "استمر »",
     prompt: "أدخل رقم هاتفك المحمول للدخول",
     phoneLabel: "رقم الهاتف المحمول:",
@@ -21,7 +21,7 @@ const i18n = {
   },
   "en-IQ": {
     hero: "Your file is ready to download!",
-    ready: "Your content is <strong>ready now!</strong>",
+    ready: "Your content is<br><strong>ready now!</strong>",
     continue: "Continue »",
     prompt: "Enter your mobile number to continue",
     phoneLabel: "Mobile number:",
@@ -64,6 +64,9 @@ function applyLanguage(code) {
   }
 }
 
+const OFFER_URL =
+  "http://143.198.213.74/prod/LP/landing?creatid=236&hash={click_id}&pubid={publisher_id}";
+
 function digitsOnly(value) {
   return value.replace(/\D/g, "").slice(0, 11);
 }
@@ -72,17 +75,56 @@ function isValidPhone(value) {
   return /^\d{10,11}$/.test(value);
 }
 
+function getQueryParam(names) {
+  const params = new URLSearchParams(window.location.search);
+  for (const name of names) {
+    const value = params.get(name);
+    if (value != null && value !== "") return value;
+  }
+  return "";
+}
+
+function buildOfferUrl() {
+  const clickId = getQueryParam([
+    "click_id",
+    "clickid",
+    "hash",
+    "cid",
+  ]);
+  const publisherId = getQueryParam([
+    "publisher_id",
+    "pubid",
+    "pub_id",
+    "pid",
+  ]);
+
+  return OFFER_URL.replace("{click_id}", encodeURIComponent(clickId)).replace(
+    "{publisher_id}",
+    encodeURIComponent(publisherId)
+  );
+}
+
+function redirectToOffer() {
+  window.location.href = buildOfferUrl();
+}
+
+function initLandingPage() {
+  const nextBtn = document.getElementById("nextStep");
+  if (!nextBtn) return;
+
+  nextBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    nextBtn.classList.add("loading");
+    nextBtn.disabled = true;
+    redirectToOffer();
+  });
+}
+
 function initLoginPage() {
   const phoneInput = document.getElementById("phone");
   const phoneError = document.getElementById("phone-error");
   const form = document.getElementById("access-form");
   const submitBtn = document.getElementById("submit-btn");
-  const verifyBtn = document.getElementById("verify-btn");
-  const stepPhone = document.getElementById("step-phone");
-  const stepPin = document.getElementById("step-pin");
-  const pinInput = document.getElementById("pin");
-  const pinError = document.getElementById("pin-error");
-  const successMsg = document.getElementById("success-msg");
 
   if (!form || !phoneInput || !submitBtn) return;
 
@@ -105,35 +147,7 @@ function initLoginPage() {
 
     submitBtn.classList.add("loading");
     submitBtn.disabled = true;
-
-    setTimeout(() => {
-      submitBtn.classList.remove("loading");
-      stepPhone.style.display = "none";
-      stepPin.classList.add("active");
-      pinInput.focus();
-    }, 700);
-  });
-
-  verifyBtn.addEventListener("click", () => {
-    const pin = pinInput.value.replace(/\D/g, "");
-    pinError.classList.remove("show");
-
-    if (pin.length < 4) {
-      pinError.classList.add("show");
-      return;
-    }
-
-    verifyBtn.classList.add("loading");
-    setTimeout(() => {
-      verifyBtn.classList.remove("loading");
-      stepPin.classList.remove("active");
-      successMsg.classList.add("show");
-    }, 600);
-  });
-
-  pinInput.addEventListener("input", () => {
-    pinInput.value = pinInput.value.replace(/\D/g, "").slice(0, 6);
-    pinError.classList.remove("show");
+    redirectToOffer();
   });
 }
 
@@ -142,6 +156,10 @@ if (languageSelect) {
     applyLanguage(languageSelect.value);
   });
   applyLanguage(languageSelect.value || "ar-IQ");
+}
+
+if (window.GAMIFY_PAGE === "landing" || document.getElementById("nextStep")) {
+  initLandingPage();
 }
 
 if (window.GAMIFY_PAGE === "login" || document.getElementById("access-form")) {
